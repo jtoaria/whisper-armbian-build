@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  whisper-cpp-build:
+    container_name: whisper-ccp
+    # BARIS INI WAJIB ADA:
+    build: .
+    restart: unless-stopped
+    volumes:
+      # Mount HDD untuk file audio
+      - type: bind
+        source: /media/devmon/dataHDD
+        target: /data
+    deploy:
+      resources:
+        limits:
+          memory: 2048M
