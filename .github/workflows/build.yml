@@ -1,0 +1,29 @@
+name: Build Whisper ARM64 Binary
+
+on: [push] # Akan berjalan setiap kali Anda push kode
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Menggunakan mesin Ubuntu dengan RAM besar
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (for ARM emulation)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build ARM64 Binary
+        run: |
+          docker buildx build \
+            --platform linux/arm64 \
+            -t whisper-arm64-binary \
+            --output type=local,dest=./output-arm64 .
+          
+      - name: Upload Binary Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: whisper-arm64-binary
+          path: output-arm64/tmp/whisper.cpp/main
