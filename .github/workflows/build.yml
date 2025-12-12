@@ -15,16 +15,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # ... (Langkah-langkah sebelumnya tetap sama)
+
       - name: Build ARM64 Binary
         run: |
+          # Perintah buildx yang sama
           docker buildx build \
             --platform linux/arm64 \
             -t whisper-arm64-binary \
             --output type=local,dest=./output-arm64 .
           
+      - name: Find and Upload Executables
+        # Mencari semua file yang dapat dieksekusi di folder hasil kompilasi
+        run: |
+          cd output-arm64/tmp/whisper.cpp/
+          # Cari semua binary yang bisa dieksekusi dan masukkan ke dalam folder 'artifacts'
+          mkdir -p artifacts
+          find . -type f -executable -name "*" -exec cp {} artifacts/ \;
+        
       - name: Upload Binary Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: whisper-arm64-binary
-          # PATH SUDAH DIKOREKSI:
-          path: output-arm64/tmp/whisper.cpp/bin/whisper-cli
+          name: whisper-arm64-executables
+          # Upload seluruh folder 'artifacts' yang berisi binary yang ditemukan
+          path: output-arm64/tmp/whisper.cpp/artifacts/*
