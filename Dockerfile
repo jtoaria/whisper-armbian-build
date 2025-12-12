@@ -14,7 +14,7 @@ RUN apt update && \
 RUN cd /tmp && \
     git clone https://github.com/ggerganov/whisper.cpp.git whisper.cpp && \
     cd whisper.cpp && \
-    make -j 1
+    make
 
 # Unduh Model
 RUN cd /tmp/whisper.cpp && \
