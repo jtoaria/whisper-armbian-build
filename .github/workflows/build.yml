@@ -26,4 +26,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: whisper-arm64-binary
-          path: output-arm64/tmp/whisper.cpp/main
+          # PATH SUDAH DIKOREKSI:
+          path: output-arm64/tmp/whisper.cpp/bin/whisper-cli
